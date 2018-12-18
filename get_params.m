@@ -42,6 +42,11 @@ switch computername
         P.setup.CLUTfile      = 'inverse_CLUT 26 April 2012, 16-48.mat';
 end
 
+% if==1, show stimuli, but do not wait for button presses.
+% if==2, completely bypass one_trial, do not show stimuli, and simulate
+% behavior.
+P.do_testrun = 2;
+
 % Note: from this line onwards, variables coding the size of things
 % indicate size in degrees visual angle. Internally, the functions
 % executing stimulus genration and presentation will recompute these sizes
@@ -91,7 +96,7 @@ P.stim.fix_color = [0 0 0];
 %% -----------------------------------------------------------------------
 % Parameters of the procedure & timing
 %  -----------------------------------------------------------------------
-P.paradigm.n_trials  = 2; % per permutation of a ll conditions
+P.paradigm.n_trials  = 10; % per permutation of a ll conditions
 
 P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
 
@@ -111,7 +116,7 @@ P.paradigm.soa      = [
     P.paradigm.dur_display + 0.160
     P.paradigm.dur_display + 0.320
     P.paradigm.dur_display + 1.200
-];
+    ];
 
 
 
@@ -143,6 +148,19 @@ P.keys.six   = KbName('6');
 P.keys.seven = KbName('7');
 P.keys.eight = KbName('8');
 P.keys.nine  = KbName('9');
+
+
+
+%% ------------------------------------------------------------------------
+%  Set up the qPR "staircase".
+%  ------------------------------------------------------------------------
+P.qpr.use_qpr        = 1;
+P.qpr.mAFC           = length(P.stim.target_orientation);
+P.qpr.StimDur        = P.paradigm.dur_display;
+P.qpr.fr             = 1/P.screen.rate;
+P.qpr.priors         = [.3 .9 .350];
+P.qpr.weights        = [0 0 0];
+P.qpr.sim_true_param = [.15 .85 .250];
 
 
 

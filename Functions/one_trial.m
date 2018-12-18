@@ -127,7 +127,13 @@ if P.setup.isEEG
         P.trigger.trig_dur);
 end
 
-[T.button, isQuit, secs] = get_response(P);
+if P.do_test_run
+    T.button = 1;
+    isQuit = 0;
+    secs = GetSecs;
+else
+    [T.button, isQuit, secs] = get_response(P);
+end
 
 % These vectors indicate the correct T.button to press for each numerical
 % index of a gap orientation. E.g. a downward gap (6 o'clock) is numerical
