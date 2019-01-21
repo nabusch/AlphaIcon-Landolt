@@ -73,7 +73,7 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 % ------------------------------------------------------------------------
 P.stim.background_color = [100 100 100];
 P.stim.display_diameter = 3; % degrees vis ang
-P.stim.set_size = 10;
+P.stim.set_size = [8 10];
 
 P.stim.target_diameter = 0.6; % degree vis ang
 P.stim.target_thick = 0.2;
@@ -96,7 +96,7 @@ P.stim.fix_color = [0 0 0];
 %% -----------------------------------------------------------------------
 % Parameters of the procedure & timing
 %  -----------------------------------------------------------------------
-P.paradigm.n_trials  = 10; % per permutation of a ll conditions
+P.paradigm.n_trials  = 1; % per permutation of a ll conditions
 
 P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
 
@@ -106,6 +106,8 @@ P.paradigm.dur_prestim_min  = 1.200;
 P.paradigm.dur_prestim_max  = 3.500;
 P.paradigm.dur_feedback     = 0.200;
 
+% These SOAs are only used if we do not use qPR, otherwise qPR will
+% determine the SOAs automagically.
 P.paradigm.soa      = [
     -0.140
     0
@@ -155,6 +157,9 @@ P.keys.nine  = KbName('9');
 %  Set up the qPR "staircase".
 %  ------------------------------------------------------------------------
 P.qpr.use_qpr        = 1;
+% if we use a testrun to simulate data, we have to use qpr. 
+if P.do_testrun == 2; P.qpr.use_qpr = 1; end
+
 P.qpr.mAFC           = length(P.stim.target_orientation);
 P.qpr.StimDur        = P.paradigm.dur_display;
 P.qpr.fr             = 1/P.screen.rate;
