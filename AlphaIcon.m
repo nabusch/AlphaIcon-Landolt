@@ -1,11 +1,11 @@
 %%
-% clear
+clear
 close all
 addpath('./Functions');
 addpath('qPR_Publication')
 
 %%
-name  ='test';
+name  ='test3';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];
@@ -19,8 +19,7 @@ INFO.P = get_params;
 % ------------------------------------------------------------------------
 switch name
     case 'test'
-        isQuit = 0;
-        % logfile will be automatically overwritten
+        isQuit = 0; % logfile will be automatically overwritten        
     otherwise
         isQuit = test_logfile(INFO);
 end
@@ -43,22 +42,10 @@ INFO = define_trials(INFO);
 %% -----------------------------------------------------------------------
 % Define the qPR structure for the adaptive "staircase".
 % ------------------------------------------------------------------------
-
-INFO.P.qpr.nTrial  = length(INFO.T);
-
-% Prepare parameter space, stimulus space, and prior probabilities
-INFO.QPR.setting = qSpace(INFO.P.qpr);
-INFO.QPR.this    = qPrior(INFO.QPR.setting);
-
-% Prep for memory spaces (Optional)
-INFO.QPR.hist = qLog(INFO.QPR.setting);
-
-% Conditional probability lookup table for correct response
-INFO.QPR.PST = qModel(INFO.QPR.setting);           % P(E|H)
-
-% Conputing Simulated Observer's PF (Simulation Only)
-INFO.QPR.sim.TrueParam = INFO.P.qpr.sim_true_param;
-INFO.QPR.sim.decayfnc   = qModel(INFO.QPR.setting, INFO.QPR.sim.TrueParam);
+switch INFO.P.qpr.use_qpr
+    case 1
+        INFO = qpr_initialize(INFO);
+end
 
 
 
@@ -84,6 +71,7 @@ if INFO.P.do_testrun < 2
         
     HideCursor
 end
+
 
 
 %% ------------------------------------------------------------------------
@@ -115,15 +103,14 @@ for itrial = 1:length(INFO.T)
             PresentPause(win, INFO, itrial)
         end
     end
+    
     %-------------------------------------------------    
     % Let qPR make a recommendation for this trials SOA, if desired.
     %-------------------------------------------------
-    if INFO.P.qpr.use_qpr
-        % Computes entropy and optimal SOA for this trial
-        INFO.QPR.this = qSelect(INFO.QPR.this, INFO.QPR.setting);
-        % Use this SOA for this trial.
-        tsoa = INFO.QPR.setting.soa(INFO.QPR.this.soa);
-        INFO.T(itrial).soa = tsoa;
+    switch INFO.P.qpr.use_qpr
+        case 1   
+            [tsoa, INFO] = qpr_get_recommendation(INFO, itrial);
+            INFO.T(itrial).soa = tsoa;
     end
     
     %-------------------------------------------------
@@ -143,16 +130,9 @@ for itrial = 1:length(INFO.T)
     %-------------------------------------------------
     % Update qPR with results from this trial.
     %-------------------------------------------------
-    if INFO.P.qpr.use_qpr
-        
-        % Keeps the posterior to use at the next trial
-        INFO.QPR.this = qUpdate(INFO.QPR.this, INFO.QPR.PST);
-        
-        % Gets current estimates for paramters of decay function
-        INFO.QPR.this = qEstimate(INFO.QPR.this, INFO.QPR.setting);
-        
-        % Logs estimation history
-        INFO.QPR.hist = qLog(INFO.QPR.this, INFO.QPR.hist);
+    switch INFO.P.qpr.use_qpr
+        case 1
+            INFO = qpr_update(INFO);
     end
     
     %-------------------------------------------------
@@ -166,8 +146,15 @@ for itrial = 1:length(INFO.T)
         INFO.ntrials = itrial;
         INFO.tTotal  = toc;
         INFO.tFinish = {datestr(clock)};
-%         save(INFO.logfilename, 'INFO');
         fprintf('Correct: %d\n', INFO.T(itrial).correct);
+    end
+    
+    % Do not save data now if this is a testrun; this would slow down too
+    % much.
+    if INFO.P.do_testrun == 2
+        continue
+    else       
+        save(INFO.logfilename, 'INFO');
     end
 end
 
@@ -176,7 +163,7 @@ end
 %% --------------------------------------------------------------------
 % After last trial, close everything and exit.
 %----------------------------------------------------------------------
-WaitSecs(2);
+save(INFO.logfilename, 'INFO');WaitSecs(2);
 CloseAndCleanup(INFO.P)
 sca
 fprintf('\nDONE!\n\n');
