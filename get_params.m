@@ -168,6 +168,15 @@ P.qpr.weights        = [0 0 0];
 P.qpr.sim_true_param = [.15 .85 .250];
 
 
+% define decay function
+P.qpr.FH.decay = @(coeffs, x) ...
+    coeffs.a0+(coeffs.a1-coeffs.a0)*exp(-x/coeffs.tau);
+
+% define probs handle over interval -for uniform distribution-
+P.qpr.FH.probs = @(x) ones(1, numel(x))/numel(x);
+
+
+
 
 %% Done.
 
