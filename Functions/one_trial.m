@@ -1,9 +1,8 @@
-function [INFO, isQuit] = one_trial(INFO, win, itrial)
+function INFO = one_trial(INFO, win, itrial)
 
 P = INFO.P; % just for shorthand
 T = INFO.T(itrial);
 
-isQuit = 0;
 cue_on  = 0;
 
 
@@ -88,6 +87,8 @@ if P.setup.isEEG
         P.trigger.trig_dur);
 end
 
+
+
 % --------------------------------------------------------
 % Turn off display
 % --------------------------------------------------------
@@ -101,6 +102,7 @@ end
 
 Screen('DrawingFinished', win);
 t_display_off = Screen('Flip', win, t_display_on + P.paradigm.dur_display);
+
 
 
 % --------------------------------------------------------
@@ -117,52 +119,15 @@ else
 end
 
 
+
 % --------------------------------------------------------
-% Wait for response.
+% Log the timing of events in this trials.
 % --------------------------------------------------------
-if P.setup.isEEG
-    SendTrigger(...
-        100+100*T.side + ... %left/right
-        30*T.isoa, ...       % which event: trial on, display on, feedback on
-        P.trigger.trig_dur);
-end
-
-if P.do_test_run
-    T.button = 1;
-    isQuit = 0;
-    secs = GetSecs;
-else
-    [T.button, isQuit, secs] = get_response(P);
-end
-
-% These vectors indicate the correct T.button to press for each numerical
-% index of a gap orientation. E.g. a downward gap (6 o'clock) is numerical
-% position 5 (see figure in Evernote), correct response would be T.button "2"
-% on the number block of the keyboard.
-gap_orientations = [0 45 90 135 180 225 270 315];
-correct_response = [8  9  6   3   2   1   4   7];
-
-if T.button == correct_response(gap_orientations==T.orientations(T.position))
-    T.correct = 1;
-    my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, P.stim.fix_size, [0 255 0], P.stim.background_color, P.screen.pixperdeg)
-
-else
-    T.correct = 0;
-    my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, P.stim.fix_size, [255 0 0]       , P.stim.background_color, P.screen.pixperdeg)
-end
-
-T.rt = secs - (t_display_on + T.soa);
-
-t_feedback_on = Screen('Flip', win);
-
-
 T.t_trial_on     = t_trial_on;
 T.t_display_on   = t_display_on;
 T.t_display_off  = t_display_off;
-T.t_feedback_on  = t_feedback_on;
 T.dur_display    = t_display_off - t_display_on;
 T.dur_display    = t_display_off - t_display_on;
-
 
 if T.soa < 0
     T.t_cue_on = t_precue_on - t_trial_on;   
@@ -176,10 +141,8 @@ else
     T.t_cue_on = 99; % this should never happen.
 end
 
-INFO.T(itrial) = T;
 
-WaitSecs(P.paradigm.dur_feedback);
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% end of trial
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --------------------------------------------------------
+% The end.
+% --------------------------------------------------------

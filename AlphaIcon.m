@@ -5,7 +5,7 @@ addpath('./Functions');
 addpath('qPR_Publication')
 
 %%
-name  ='test3';
+name  ='test';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];
@@ -19,7 +19,7 @@ INFO.P = get_params;
 % ------------------------------------------------------------------------
 switch name
     case 'test'
-        isQuit = 0; % logfile will be automatically overwritten        
+        isQuit = 0; % logfile will be automatically overwritten
     otherwise
         isQuit = test_logfile(INFO);
 end
@@ -68,7 +68,7 @@ if INFO.P.do_testrun < 2
         load(INFO.P.setup.CLUTfile);
         Screen('LoadNormalizedGammaTable',win,inverseCLUT);
     end
-        
+    
     HideCursor
 end
 
@@ -104,11 +104,11 @@ for itrial = 1:length(INFO.T)
         end
     end
     
-    %-------------------------------------------------    
+    %-------------------------------------------------
     % Let qPR make a recommendation for this trials SOA, if desired.
     %-------------------------------------------------
     switch INFO.P.qpr.use_qpr
-        case 1   
+        case 1
             [tsoa, INFO] = qpr_get_recommendation(INFO, itrial);
             INFO.T(itrial).soa = tsoa;
     end
@@ -117,16 +117,30 @@ for itrial = 1:length(INFO.T)
     % Present the trial or simulate the trial.
     %-------------------------------------------------
     fprintf('#%d of %d. SOA: %2.3f secs.', itrial, length(INFO.T),INFO.T(itrial).soa);
-
-    if INFO.P.do_testrun == 2 % skip one_trial, just simulate        
-        % Simulates observer's response (Simulation Only)
-        INFO.QPR.this.pc = INFO.QPR.sim.decayfnc(INFO.QPR.this.soa);
-        INFO.QPR.this.correct = lobesFlips(INFO.QPR.this.pc);        
-        INFO.T(itrial).correct = INFO.QPR.this.correct;
-    else
-        [INFO, isQuit] = one_trial(INFO, win, itrial);
-    end     
-        
+    
+    switch INFO.P.do_testrun
+        case 2
+            % do nothing, just simulation.
+        otherwise
+            % really present stimuli on the screen.
+            [INFO, isQuit] = one_trial(INFO, win, itrial);
+    end
+    
+    %-------------------------------------------------
+    % Get the behavioral response for this trial.
+    %-------------------------------------------------
+    switch INFO.P.do_testrun
+        case 0
+            % really ask the subject for a button press.
+            [INFO, isQuit] = get_response(INFO, win, itrial);
+        otherwise
+            % simulate beahvioral data based on qPR function
+            INFO.QPR.this.pc = INFO.QPR.sim.decayfnc(INFO.QPR.this.soa);
+            INFO.QPR.this.correct = lobesFlips(INFO.QPR.this.pc);
+            INFO.T(itrial).correct = INFO.QPR.this.correct;
+            INFO.T(itrial).rt = 999;
+    end
+    
     %-------------------------------------------------
     % Update qPR with results from this trial.
     %-------------------------------------------------
@@ -153,7 +167,7 @@ for itrial = 1:length(INFO.T)
     % much.
     if INFO.P.do_testrun == 2
         continue
-    else       
+    else
         save(INFO.logfilename, 'INFO');
     end
 end
