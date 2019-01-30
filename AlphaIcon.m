@@ -2,7 +2,6 @@
 clear
 close all
 addpath('./Functions');
-addpath('qPR_Publication')
 
 %%
 name  ='test';
@@ -13,7 +12,7 @@ INFO.P = get_params;
 
 
 
-%% ------------------------------------------------------------------------
+%% -----------------------------------------------------------------------
 % Test if logfile exists for this subject.
 % If yes, confirm to overwrite or quit.
 % ------------------------------------------------------------------------
@@ -44,7 +43,15 @@ INFO = define_trials(INFO);
 % ------------------------------------------------------------------------
 switch INFO.P.qpr.use_qpr
     case 1
+        % use original qPR code.
+        addpath('./qPR_Publication')
+        rmpath('./my_qPR-master')
         INFO = qpr_initialize(INFO);
+    case 2
+        % use Elio's code.
+        addpath('./my_qPR-master')
+        rmpath('./qPR_Publication')
+        INFO = qpr_initialize(INFO);        
 end
 
 
