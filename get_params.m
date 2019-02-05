@@ -13,9 +13,6 @@ switch computername
         myres = Screen('Resolution', thescreen);
         
         P.screen.screen_num   = thescreen;%max(nscreens); 0 is you have only one screen (like a laptop) 1 or 2 if you have multiple screens one is usually the matlab screen
-        P.screen.width        = myres.width;
-        P.screen.height       = myres.height;
-        P.screen.rate         = myres.hz;
         P.screen.size         = [36 27]; %screen size in centimeters.
         P.screen.viewdist     = 55; % distance between subject and monitor
         
@@ -30,9 +27,6 @@ switch computername
         myres = Screen('Resolution', thescreen);
         
         P.screen.screen_num   = thescreen;%max(nscreens); 0 is you have only one screen (like a laptop) 1 or 2 if you have multiple screens one is usually the matlab screen
-        P.screen.width        = myres.width;
-        P.screen.height       = myres.height;
-        P.screen.rate         = myres.hz;
         P.screen.size         = [36 27]; %screen size in centimeters.
         P.screen.viewdist     = 55; % distance between subject and monitor
         
@@ -41,6 +35,12 @@ switch computername
         P.setup.useCLUT       = 0;
         P.setup.CLUTfile      = 'inverse_CLUT 26 April 2012, 16-48.mat';
 end
+
+P.screen.width        = myres.width;
+P.screen.height       = myres.height;
+P.screen.rate         = myres.hz;
+P.screen.frameint     = 1/P.screen.rate; % duration of a single frame in secs
+P.screen.buffer       = 0.5 * P.screen.frameint; % request a flip slightly earlier than necessary to make sure that the flip comes at the required time.
 
 % if==1, show stimuli, but do not wait for button presses.
 % if==2, completely bypass one_trial, do not show stimuli, and simulate
