@@ -42,7 +42,7 @@ else
     T.correct = 0;
 end
 
-T.rt = secs - (t_display_on + T.soa);
+T.rt = secs - (T.t_display_on + T.soa);
 
 INFO.T(itrial) = T;
 

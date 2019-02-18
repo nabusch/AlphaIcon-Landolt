@@ -37,7 +37,7 @@ end
 % --------------------------------------------------------
 % Present the rest of the trial in a loop.
 % --------------------------------------------------------
-t_req_disp_on  = (T.t_trial_on + dur_predisplay) - P.screen.buffer;
+t_req_disp_on  = (T.t_trial_on  + dur_predisplay) - P.screen.buffer;
 t_req_disp_off = (t_req_disp_on + P.paradigm.dur_display) - P.screen.buffer;
 t_req_cue_on   = (t_req_disp_on + T.soa) - P.screen.buffer;
 
@@ -48,7 +48,7 @@ n_cueframes         = 0;
 
 while ~is_trial_over
     
-    now = GetSecs - T.t_trial_on;
+    now = GetSecs;% - T.t_trial_on;
     DrawEmptyScreen
     
     % Show the display if the time is right.
@@ -105,6 +105,7 @@ while ~is_trial_over
 end
 
 INFO.T(itrial) = T;
+fprintf('Over. ')
 
 % --------------------------------------------------------
 % The end.

@@ -12,7 +12,10 @@ switch computername
         thescreen = max(Screen('Screens'));
         myres = Screen('Resolution', thescreen);
         
-        P.screen.screen_num   = thescreen;%max(nscreens); 0 is you have only one screen (like a laptop) 1 or 2 if you have multiple screens one is usually the matlab screen
+%         myres.width = myres.width/2;
+%         myres.height = myres.height/2;
+        
+        P.screen.screen_num   = thescreen;% 0 is you have only one screen (like a laptop) 1 or 2 if you have multiple screens one is usually the matlab screen
         P.screen.size         = [36 27]; %screen size in centimeters.
         P.screen.viewdist     = 55; % distance between subject and monitor
         
@@ -45,7 +48,7 @@ P.screen.buffer       = 0.5 * P.screen.frameint; % request a flip slightly earli
 % if==1, show stimuli, but do not wait for button presses.
 % if==2, completely bypass one_trial, do not show stimuli, and simulate
 % behavior.
-P.do_testrun = 2;
+P.do_testrun = 0;
 
 % Note: from this line onwards, variables coding the size of things
 % indicate size in degrees visual angle. Internally, the functions
@@ -74,10 +77,12 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 P.stim.background_color = [100 100 100];
 P.stim.display_diameter = 3; % degrees vis ang
 P.stim.set_size = [8 10];
+P.stim.set_size = [8];
 
 P.stim.target_diameter = 0.6; % degree vis ang
 P.stim.target_thick = 0.2;
 P.stim.target_color = [160 160 160; 255 255 255];
+P.stim.target_color = [160 160 160];
 P.stim.target_gap = 20; % degrees of the full circle
 P.stim.target_gapcolor = P.stim.background_color; % degrees of the full circle
 % P.stim.target_gapcolor = [0 0 1]; % degrees of the full circle
@@ -156,9 +161,9 @@ P.keys.nine  = KbName('9');
 %% ------------------------------------------------------------------------
 %  Set up the qPR "staircase".
 %  ------------------------------------------------------------------------
-P.qpr.use_qpr        = 1;
+P.qpr.use_qpr        = 0;
 % if we use a testrun to simulate data, we have to use qpr. 
-if P.do_testrun == 2; P.qpr.use_qpr = 1; end
+% if P.do_testrun == 2; P.qpr.use_qpr = 1; end
 
 P.qpr.mAFC           = length(P.stim.target_orientation);
 P.qpr.StimDur        = P.paradigm.dur_display;

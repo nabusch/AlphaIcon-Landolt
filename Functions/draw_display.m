@@ -1,4 +1,4 @@
-draw_display
+% draw_display
 
 l = lines(P.stim.set_size);
 l = Shuffle(l);
