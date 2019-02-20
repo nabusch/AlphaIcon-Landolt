@@ -74,22 +74,22 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 %% -----------------------------------------------------------------------
 % Parameters of the display and stimuli
 % ------------------------------------------------------------------------
-P.stim.background_color = [100 100 100];
-P.stim.display_diameter = 3; % degrees vis ang
+P.stim.background_color = [70 70 70];
+P.stim.display_diameter = 2.5; % degrees vis ang
 P.stim.set_size = [6 8];
 % P.stim.set_size = [8];
 
 P.stim.target_diameter = 0.6; % degree vis ang
-P.stim.target_thick = 0.2;
+P.stim.target_thick = 0.28;
 P.stim.target_color = [160 160 160; 255 255 255];
 % P.stim.target_color = [160 160 160];
-P.stim.target_gap = 20; % degrees of the full circle
+P.stim.target_gap = 25; % degrees of the full circle
 P.stim.target_gapcolor = P.stim.background_color; % degrees of the full circle
 % P.stim.target_gapcolor = [0 0 1]; % degrees of the full circle
 P.stim.target_orientation = [0 45 90 135 180 225 270 315];
 
 P.stim.cue_offset = 0.5; % in degs vis ang.
-P.stim.cue_length = 1.5;
+P.stim.cue_length = 1.0;
 P.stim.cue_thick  = 0.1;
 P.stim.cue_color  = [0 0 0];
 
@@ -106,7 +106,7 @@ P.paradigm.n_trials  = 2; % per permutation of a ll conditions
 P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
 P.paradigm.do_feedback = 1;
 
-P.paradigm.dur_display      = 0.050;
+P.paradigm.dur_display      = 0.060;
 P.paradigm.dur_prestim_mean = 2.0;
 P.paradigm.dur_prestim_min  = 1.200;
 P.paradigm.dur_prestim_max  = 3.500;

@@ -4,7 +4,7 @@ close all
 addpath('./Functions');
 
 %%
-name  ='niko_loop_01';
+name  ='test';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];
@@ -50,8 +50,8 @@ switch INFO.P.qpr.use_qpr
     case 2
         % use Elio's code.
         addpath('./my_qPR')
-        rmpath('./qPR_Publication') 
-
+        rmpath('./qPR_Publication')
+        
         setting = [];
         setting.nTrial = length(INFO.T);
         setting.FH.decay = @(coeffs, x) ...
@@ -140,8 +140,8 @@ for itrial = 1:length(INFO.T)
             this.trial = itrial;
             
             % compute entropy
-            this = qSelect(this, setting);      
-            INFO.T(itrial).soa = this.soatime;         
+            this = qSelect(this, setting);
+            INFO.T(itrial).soa = this.soatime;
     end
     
     %-------------------------------------------------
@@ -154,7 +154,7 @@ for itrial = 1:length(INFO.T)
             % do nothing, just simulation.
         otherwise
             % really present stimuli on the screen.
-%             INFO = one_trial(INFO, win, itrial);
+            %             INFO = one_trial(INFO, win, itrial);
             INFO = one_trial_loop(INFO, win, itrial);
     end
     
@@ -166,7 +166,7 @@ for itrial = 1:length(INFO.T)
             % really ask the subject for a button press.
             [INFO, isQuit] = get_response(INFO, win, itrial);
             this.correct = INFO.T(itrial).correct;
-        case 1            
+        case 1
             switch INFO.P.qpr.use_qpr
                 case 1
                     % simulate beahvioral data based on qPR function
@@ -174,11 +174,11 @@ for itrial = 1:length(INFO.T)
                     INFO.QPR.this.correct = lobesFlips(INFO.QPR.this.pc);
                     INFO.T(itrial).correct = INFO.QPR.this.correct;
                     INFO.T(itrial).rt = 999;
-                case 2                    
+                case 2
                     % simulate observer response
                     this = myqPR_observer(this, setting);
                     INFO.T(itrial).correct = this.correct;
-                    INFO.T(itrial).rt = 999;                    
+                    INFO.T(itrial).rt = 999;
             end
     end
     fprintf('Correct: %d\n', INFO.T(itrial).correct);
@@ -205,7 +205,7 @@ for itrial = 1:length(INFO.T)
             if itrial >1
                 vect_diff = evolution_pars(itrial,:)-evolution_pars(itrial-1,:);
                 mag(itrial) = norm(vect_diff);
-            end              
+            end
     end
     
     
@@ -218,7 +218,9 @@ for itrial = 1:length(INFO.T)
     else
         INFO.qPR.this = this;
         INFO.qPR.hist = hist;
-        INFO.qPR.mag  = mag;
+        if itrial >1
+            INFO.qPR.mag  = mag;
+        end
         INFO.qPR.setting = setting;
         INFO.qPR.evolution_pars = evolution_pars;
         
