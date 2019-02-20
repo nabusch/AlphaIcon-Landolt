@@ -1,9 +1,9 @@
 % draw_display
 
-l = lines(P.stim.set_size);
+l = lines(T.setsize);
 l = Shuffle(l);
 
-for ipos = 1:P.stim.set_size      
+for ipos = 1:T.setsize     
 %     P.stim.target_gapcolor.*T.target_color
     
     my_landolt(win, xcoords(ipos) + P.screen.cx, ycoords(ipos) + P.screen.cy, ...

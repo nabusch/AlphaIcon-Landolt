@@ -4,7 +4,7 @@ close all
 addpath('./Functions');
 
 %%
-name  ='test';
+name  ='niko_loop_01';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];
@@ -165,8 +165,8 @@ for itrial = 1:length(INFO.T)
         case 0
             % really ask the subject for a button press.
             [INFO, isQuit] = get_response(INFO, win, itrial);
-        otherwise
-            
+            this.correct = INFO.T(itrial).correct;
+        case 1            
             switch INFO.P.qpr.use_qpr
                 case 1
                     % simulate beahvioral data based on qPR function
@@ -178,10 +178,10 @@ for itrial = 1:length(INFO.T)
                     % simulate observer response
                     this = myqPR_observer(this, setting);
                     INFO.T(itrial).correct = this.correct;
-                    INFO.T(itrial).rt = 999;
-                    
+                    INFO.T(itrial).rt = 999;                    
             end
     end
+    fprintf('Correct: %d\n', INFO.T(itrial).correct);
     
     %-------------------------------------------------
     % Update qPR with results from this trial.
@@ -205,10 +205,9 @@ for itrial = 1:length(INFO.T)
             if itrial >1
                 vect_diff = evolution_pars(itrial,:)-evolution_pars(itrial-1,:);
                 mag(itrial) = norm(vect_diff);
-            end
-  
-            
+            end              
     end
+    
     
     %-------------------------------------------------
     % Save results for this trial or quit the experiment.
@@ -217,11 +216,16 @@ for itrial = 1:length(INFO.T)
         CloseAndCleanup(INFO.P)
         break
     else
+        INFO.qPR.this = this;
+        INFO.qPR.hist = hist;
+        INFO.qPR.mag  = mag;
+        INFO.qPR.setting = setting;
+        INFO.qPR.evolution_pars = evolution_pars;
+        
         INFO.T(itrial).trial_completed = 1;
         INFO.ntrials = itrial;
         INFO.tTotal  = toc;
         INFO.tFinish = {datestr(clock)};
-        fprintf('Correct: %d\n', INFO.T(itrial).correct);
     end
     
     % Do not save data now if this is a testrun; this would slow down too

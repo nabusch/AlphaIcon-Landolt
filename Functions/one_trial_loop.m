@@ -15,7 +15,7 @@ end
 % Prepare the display.
 [~, xcoords, ycoords] = PlaceObjectsOnACircle(...
     P.stim.display_diameter*P.screen.pixperdeg, ...
-    P.stim.set_size, P.stim.target_diameter, ...
+    T.setsize, P.stim.target_diameter, ...
     P.stim.target_diameter);
 
 
@@ -95,9 +95,9 @@ while ~is_trial_over
     end
     
     % If everything has been shown, then this trial is over.
-    if n_displayframes_on > 1 && ...
-            n_displayframes_off > 1 && ...
-            n_cueframes > 1
+    if n_displayframes_on >= 1 && ...
+            n_displayframes_off >= 1 && ...
+            n_cueframes >= 1
         
         is_trial_over = 1;
     end
@@ -105,7 +105,7 @@ while ~is_trial_over
 end
 
 INFO.T(itrial) = T;
-fprintf('Over. ')
+fprintf(' Over. ')
 
 % --------------------------------------------------------
 % The end.

@@ -76,13 +76,13 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 % ------------------------------------------------------------------------
 P.stim.background_color = [100 100 100];
 P.stim.display_diameter = 3; % degrees vis ang
-P.stim.set_size = [8 10];
-P.stim.set_size = [8];
+P.stim.set_size = [6 8];
+% P.stim.set_size = [8];
 
 P.stim.target_diameter = 0.6; % degree vis ang
 P.stim.target_thick = 0.2;
 P.stim.target_color = [160 160 160; 255 255 255];
-P.stim.target_color = [160 160 160];
+% P.stim.target_color = [160 160 160];
 P.stim.target_gap = 20; % degrees of the full circle
 P.stim.target_gapcolor = P.stim.background_color; % degrees of the full circle
 % P.stim.target_gapcolor = [0 0 1]; % degrees of the full circle
@@ -101,9 +101,10 @@ P.stim.fix_color = [0 0 0];
 %% -----------------------------------------------------------------------
 % Parameters of the procedure & timing
 %  -----------------------------------------------------------------------
-P.paradigm.n_trials  = 1; % per permutation of a ll conditions
+P.paradigm.n_trials  = 2; % per permutation of a ll conditions
 
 P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
+P.paradigm.do_feedback = 1;
 
 P.paradigm.dur_display      = 0.050;
 P.paradigm.dur_prestim_mean = 2.0;
@@ -161,7 +162,7 @@ P.keys.nine  = KbName('9');
 %% ------------------------------------------------------------------------
 %  Set up the qPR "staircase".
 %  ------------------------------------------------------------------------
-P.qpr.use_qpr        = 0;
+P.qpr.use_qpr        = 2;
 % if we use a testrun to simulate data, we have to use qpr. 
 % if P.do_testrun == 2; P.qpr.use_qpr = 1; end
 

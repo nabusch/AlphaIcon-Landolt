@@ -51,18 +51,18 @@ INFO.T(itrial) = T;
 % --------------------------------------------------------
 % Present the feedback.
 % --------------------------------------------------------
-switch T.correct
-    case 1
-        my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, ...
-            P.stim.fix_size, [0 255 0], P.stim.background_color, P.screen.pixperdeg)
-        
-    case 0
-        my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, ...
-            P.stim.fix_size, [255 0 0], P.stim.background_color, P.screen.pixperdeg)
+if P.paradigm.do_feedback
+    switch T.correct
+        case 1
+            my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, ...
+                P.stim.fix_size, [0 100 50], P.stim.background_color, P.screen.pixperdeg)
+            
+        case 0
+            my_optimal_fixationpoint(win, P.screen.cx, P.screen.cy, ...
+                P.stim.fix_size, [100 50 0], P.stim.background_color, P.screen.pixperdeg)
+    end
 end
 
+Screen('Flip', win);
 WaitSecs(P.paradigm.dur_feedback);
-
-
-
 
