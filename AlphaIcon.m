@@ -4,6 +4,7 @@ close all
 addpath('./Functions');
 
 %%
+% name  ='niko_paris_01';
 name  ='test';
 
 INFO.name              = name;
@@ -166,7 +167,7 @@ for itrial = 1:length(INFO.T)
             % really ask the subject for a button press.
             [INFO, isQuit] = get_response(INFO, win, itrial);
             this.correct = INFO.T(itrial).correct;
-        case 1
+        otherwise
             switch INFO.P.qpr.use_qpr
                 case 1
                     % simulate beahvioral data based on qPR function

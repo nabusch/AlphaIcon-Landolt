@@ -11,9 +11,11 @@ switch computername
         
         thescreen = max(Screen('Screens'));
         myres = Screen('Resolution', thescreen);
-        
+%         myres.width = 1920;
+%         myres.height = 1080;
 %         myres.width = myres.width/2;
 %         myres.height = myres.height/2;
+%         myres.pixelSize = myres.pixelSize/2;
         
         P.screen.screen_num   = thescreen;% 0 is you have only one screen (like a laptop) 1 or 2 if you have multiple screens one is usually the matlab screen
         P.screen.size         = [36 27]; %screen size in centimeters.
@@ -75,13 +77,14 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 % Parameters of the display and stimuli
 % ------------------------------------------------------------------------
 P.stim.background_color = [70 70 70];
-P.stim.display_diameter = 2.5; % degrees vis ang
-P.stim.set_size = [6 8];
+P.stim.display_diameter = 3; % degrees vis ang
+P.stim.set_size = [6];
 % P.stim.set_size = [8];
 
+P.stim.target_type = 'wedge'; % wedge or landoltring
 P.stim.target_diameter = 0.6; % degree vis ang
 P.stim.target_thick = 0.28;
-P.stim.target_color = [160 160 160; 255 255 255];
+P.stim.target_color = [100 100 100; 180 180 180; 255 255 255];
 % P.stim.target_color = [160 160 160];
 P.stim.target_gap = 25; % degrees of the full circle
 P.stim.target_gapcolor = P.stim.background_color; % degrees of the full circle
@@ -101,7 +104,7 @@ P.stim.fix_color = [0 0 0];
 %% -----------------------------------------------------------------------
 % Parameters of the procedure & timing
 %  -----------------------------------------------------------------------
-P.paradigm.n_trials  = 2; % per permutation of a ll conditions
+P.paradigm.n_trials  = 2; % per permutation of all conditions
 
 P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
 P.paradigm.do_feedback = 1;
@@ -110,7 +113,7 @@ P.paradigm.dur_display      = 0.060;
 P.paradigm.dur_prestim_mean = 2.0;
 P.paradigm.dur_prestim_min  = 1.200;
 P.paradigm.dur_prestim_max  = 3.500;
-P.paradigm.dur_feedback     = 0.200;
+P.paradigm.dur_feedback     = 0.100;
 
 % These SOAs are only used if we do not use qPR, otherwise qPR will
 % determine the SOAs automagically.
