@@ -6,14 +6,18 @@ Report = 0;
 isQuit = 0;
 keyIsDown = 0;
 
+report_keys = [1 2 3 4 6 7 8 9];
+
 while Report==0
     [keyIsDown,secs,keyCode] = KbCheck;
     if keyIsDown
+        
+        the_key = str2num(KbName(find(keyCode)));
         if keyCode(P.keys.quitkey)
             Report = 99; isQuit = 1;
             return;
-        else            
-            Report = str2num(KbName(find(keyCode)));
+        elseif ismember(the_key, report_keys)            
+            Report = the_key;
         end;        
     end;
 end;

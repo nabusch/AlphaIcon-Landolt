@@ -65,4 +65,6 @@ end
 
 Screen('Flip', win);
 WaitSecs(P.paradigm.dur_feedback);
+DrawEmptyScreen
+T.t_trial_on = Screen('Flip', win);
 

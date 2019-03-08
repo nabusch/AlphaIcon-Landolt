@@ -5,7 +5,7 @@ addpath('./Functions');
 
 %%
 name  ='niko_paris_02';
-% name  ='test';
+name  ='test';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];

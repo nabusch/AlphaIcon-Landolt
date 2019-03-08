@@ -77,7 +77,7 @@ P.screen.black = BlackIndex(P.screen.screen_num);
 % Parameters of the display and stimuli
 % ------------------------------------------------------------------------
 P.stim.background_color = [70 70 70];
-P.stim.display_diameter = 3; % degrees vis ang
+P.stim.display_diameter = 2.6; % degrees vis ang
 P.stim.set_size = [6];
 % P.stim.set_size = [8];
 
@@ -104,16 +104,16 @@ P.stim.fix_color = [0 0 0];
 %% -----------------------------------------------------------------------
 % Parameters of the procedure & timing
 %  -----------------------------------------------------------------------
-P.paradigm.n_trials  = 2; % per permutation of all conditions
+P.paradigm.n_trials  = 4; % per permutation of all conditions
 
-P.paradigm.break_after_x_trials = 20;    % Present a break after so many trials.
+P.paradigm.break_after_x_trials = 30;    % Present a break after so many trials.
 P.paradigm.do_feedback = 1;
 
-P.paradigm.dur_display      = 0.060;
-P.paradigm.dur_prestim_mean = 2.0;
+P.paradigm.dur_display      = 0.040;
+P.paradigm.dur_prestim_mean = 1.8;
 P.paradigm.dur_prestim_min  = 1.200;
 P.paradigm.dur_prestim_max  = 3.500;
-P.paradigm.dur_feedback     = 0.100;
+P.paradigm.dur_feedback     = 0.300;
 
 % These SOAs are only used if we do not use qPR, otherwise qPR will
 % determine the SOAs automagically.
@@ -145,20 +145,7 @@ P.trigger.trig_response = 252;
 %  Define relevant buttons
 %  ------------------------------------------------------------------------
 KbName('UnifyKeyNames');
-P.keys.upkey = KbName('UpArrow');
-P.keys.downkey = KbName('DownArrow');
-P.keys.lkey  = KbName('LeftArrow');
-P.keys.rkey    = KbName('RightArrow');
 P.keys.quitkey = KbName('ESCAPE');
-P.keys.one   = KbName('1');
-P.keys.two   = KbName('2');
-P.keys.three = KbName('3');
-P.keys.four  = KbName('4');
-P.keys.five  = KbName('5');
-P.keys.six   = KbName('6');
-P.keys.seven = KbName('7');
-P.keys.eight = KbName('8');
-P.keys.nine  = KbName('9');
 
 
 
