@@ -4,8 +4,8 @@ close all
 addpath('./Functions');
 
 %%
-% name  ='niko_paris_01';
-name  ='test';
+name  ='niko_paris_02';
+% name  ='test';
 
 INFO.name              = name;
 INFO.logfilename       = ['Logfiles' filesep name '_Logfile.mat'];
@@ -34,6 +34,13 @@ end
 %% -----------------------------------------------------------------------
 % Define what do do on each trial.
 % ------------------------------------------------------------------------
+
+% If we use qPR to determine the SOA on each trial, it does not make sense
+% to predefine and counterbalance SOAs.
+if INFO.P.qpr.use_qpr ~= 0
+    INFO.P.paradigm.soa = nan;
+end
+
 INFO = define_trials(INFO);
 % t=struct2table(INFO.T);
 
