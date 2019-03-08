@@ -9,7 +9,7 @@ addpath('../my_qPR')
 
 %%
 for isub = 1:nsubjects
-    load(fullfile('.\Logfiles', [names{isub} '_Logfile.mat']));
+    load(fullfile('..\Logfiles', [names{isub} '_Logfile.mat']));
     
     P = INFO.P; % just for shorthand
     T = INFO.T; % just for shorthand

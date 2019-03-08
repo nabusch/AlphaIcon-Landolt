@@ -2,14 +2,14 @@ clear all; clc
 addpath('../my_qPR')
 
 names = {
-    'test3'
+    'niko_paris_02'
     };
 
 nsubjects = length(names);
 
 %%
 for isub = 1:nsubjects
-    load(fullfile('.\Logfiles', [names{isub} '_Logfile.mat']));
+    load(fullfile('..', 'Logfiles', [names{isub} '_Logfile.mat']));
     
     P =   INFO.P; % just for shorthand
     T =   INFO.T; % just for shorthand
@@ -81,7 +81,7 @@ end
 
 %% Plot the Figure.
 x_vals = setting.soa;
-figure; hold on;
+figure('color', 'w'); hold on;
 
 for iPlot = 1:length(RES)
     
@@ -92,5 +92,7 @@ for iPlot = 1:length(RES)
     xlabel('SOA')
     ylabel('p correct')
     
+    ylim([0 1])
+    gridxy([],1/P.stim.set_size, 'linestyle', '--')
 end
 
