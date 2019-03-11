@@ -7,6 +7,9 @@ names = {
 nsubjects = length(names);
 addpath('../my_qPR')
 
+% edited by eb on 11-Mar-2019 
+% corrected the isoa bug
+
 %%
 for isub = 1:nsubjects
     load(fullfile('.\Logfiles', [names{isub} '_Logfile.mat']));
@@ -37,7 +40,8 @@ for isub = 1:nsubjects
     evolution_pars = INFO.qPR.evolution_pars;
     
     % append vect of soas
-    evolution_pars(:,4) = [INFO.T.isoa]';
+    % evolution_pars(:,4) = [INFO.T.isoa]';         %% SOURCE OF WEIRD APPROXIMATION of qpr values (eb 2019-03-11)
+    evolution_pars(:,4) = INFO.qPR.hist.SOA';        % the "hist" subfield has the right SOA indexes actually used during the data collection
     evolution_pars(:,7) = [INFO.T.correct]';
     INFO.qPR.evolution_pars = evolution_pars;
 end
