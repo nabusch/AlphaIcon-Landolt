@@ -34,6 +34,18 @@ for isub = 1:nsubjects
             mytrials = find([T.setsize] == setsz(iss) & ...
                 tarcols == lumin(ilum));
             
+            correct = [T(mytrials).correct];
+            soa =     [T(mytrials).soa];
+            [sort_soa, sortidx] = sort(soa);
+            sort_correct = correct(sortidx);
+            [unique_soas, ~, soabin] = unique(sort_soa);
+            RES(acc).unique_soas = unique_soas;
+            for isoa = 1:length(unique_soas)            
+                RES(acc).cum_correct(isoa) = sum(sort_correct' & soabin<=isoa)/sum(soabin<=isoa);
+                RES(acc).correct(isoa)     = sum(sort_correct' & soabin==isoa)/sum(soabin==isoa);
+                RES(acc).n(isoa)                 = sum(soabin==isoa);
+            end
+            
             % Initialize QPR
             clear this hist evolution_pars mag
             qpr.setting.nTrial = length(mytrials);
@@ -81,6 +93,9 @@ end
 
 %% Plot the Figure.
 x_vals = setting.soa;
+
+line_cols = lines;
+
 figure('color', 'w'); hold on;
 
 for iPlot = 1:length(RES)
@@ -88,11 +103,21 @@ for iPlot = 1:length(RES)
     coeffs = RES(iPlot).this.my_est
     y_vals = setting.FH.decay(coeffs, x_vals);
     
-    plot(x_vals, y_vals, 'LineWidth', 3)
+    ph(iPlot) = plot(x_vals, y_vals, 'LineWidth', 3, 'color', line_cols(iPlot, :));
     xlabel('SOA')
     ylabel('p correct')
     
+    plot(0.01*iPlot+RES(iPlot).unique_soas, RES(iPlot).cum_correct, ...
+        'o-', 'color', line_cols(iPlot, :), 'markerfacecolor', line_cols(iPlot, :))
+
+    stem(0.01*iPlot+RES(iPlot).unique_soas, RES(iPlot).n./sum(RES(iPlot).n), ...
+        'x-', 'color', line_cols(iPlot, :), 'markerfacecolor', line_cols(iPlot, :))
+    
     ylim([0 1])
     gridxy([],1/P.stim.set_size, 'linestyle', '--')
+    
+    legstr{iPlot} = sprintf('cond %d', iPlot);
+    
 end
 
+legend(ph, legstr)
